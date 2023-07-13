@@ -156,7 +156,9 @@ class Loader {
     if (firstEvent.tag != '!' &&
         firstEvent.tag != null &&
         firstEvent.tag != 'tag:yaml.org,2002:map') {
-      throw YamlException('Invalid tag for mapping.', firstEvent.span);
+      if(key.value != "<<"){
+        throw YamlException('Invalid tag for mapping.', firstEvent.span);
+      }
     }
 
     var children = deepEqualsMap<dynamic, YamlNode>();
