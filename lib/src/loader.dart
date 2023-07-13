@@ -156,9 +156,7 @@ class Loader {
     if (firstEvent.tag != '!' &&
         firstEvent.tag != null &&
         firstEvent.tag != 'tag:yaml.org,2002:map') {
-      if(key.value != "<<"){
         throw YamlException('Invalid tag for mapping.', firstEvent.span);
-      }
     }
 
     var children = deepEqualsMap<dynamic, YamlNode>();
@@ -170,7 +168,9 @@ class Loader {
       var key = _loadNode(event);
       var value = _loadNode(_parser.parse());
       if (children.containsKey(key)) {
-        throw YamlException('Duplicate mapping key.', key.span);
+        if(key.value != "<<"){
+          throw YamlException('Duplicate mapping key.', key.span);
+        }
       }
 
       children[key] = value;
